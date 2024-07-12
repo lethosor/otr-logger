@@ -1,0 +1,11 @@
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "${BIND_ADDR}:8000"
+    restart: always
+    volumes:
+      - type: bind
+        source: "${DATA_DIR}"
+        target: /data

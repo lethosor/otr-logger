@@ -2,6 +2,7 @@ import argparse
 import datetime
 import json
 import os
+import sys
 import threading
 
 import bottle
@@ -34,9 +35,14 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-o', '--host', default='localhost')
 parser.add_argument('-p', '--port', type=int, default=8035)
 parser.add_argument('-d', '--data-dir', default='data')
+parser.add_argument('--use-gunicorn', action='store_true')
 args = parser.parse_args()
 
 os.makedirs(args.data_dir, exist_ok=True)
 logger = Logger(args.data_dir)
 
-bottle.run(host=args.host, port=args.port)
+if args.use_gunicorn:
+    sys.argv = sys.argv[:1]
+    bottle.run(host=args.host, port=args.port, server='gunicorn')
+else:
+    bottle.run(host=args.host, port=args.port)
