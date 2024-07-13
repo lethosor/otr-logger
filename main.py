@@ -29,11 +29,13 @@ def handle_publish():
         bottle.abort(400, 'empty body')
 
     body = bottle.request.json.copy()
+    if '_meta' in body:
+        bottle.abort(400, 'unexpected field: _meta')
     headers = {}
     for k, v in bottle.request.headers.items():
         if k.lower().startswith('x-limit-'):
             headers[k] = v
-    body['_meta'] = {'headers': headers}
+    body['_meta'] = {'headers': headers, 'time_recv': int(datetime.datetime.now(datetime.UTC).timestamp())}
 
     body_str = json.dumps(body)
     if len(body_str) > 1024:
