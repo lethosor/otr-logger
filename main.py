@@ -19,7 +19,7 @@ class Logger:
                 f.write(message.strip('\n') + '\n')
 
     def _get_current_filename(self):
-        return datetime.datetime.utcnow().strftime('%Y%m%d') + '.json.log'
+        return datetime.datetime.now(datetime.UTC).strftime('%Y%m%d') + '.json.log'
 
 logger: Logger = None
 
