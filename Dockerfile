@@ -14,5 +14,6 @@ RUN useradd --uid 1000 user
 USER user
 
 EXPOSE 8000
+STOPSIGNAL INT
 
 ENTRYPOINT ["python3", "main.py", "--data-dir", "/data", "--host", "0.0.0.0", "--port", "8000"]
