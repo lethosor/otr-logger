@@ -25,6 +25,8 @@ logger: Logger = None
 
 @bottle.post('/pub')
 def handle_publish():
+    if not bottle.request.json:
+        bottle.abort(400, 'empty body')
     body = json.dumps(bottle.request.json)
     if len(body) > 1024:
         raise ValueError(f"Body too large: {body}")
