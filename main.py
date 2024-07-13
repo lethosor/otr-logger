@@ -27,10 +27,19 @@ logger: Logger = None
 def handle_publish():
     if not bottle.request.json:
         bottle.abort(400, 'empty body')
-    body = json.dumps(bottle.request.json)
-    if len(body) > 1024:
-        raise ValueError(f"Body too large: {body}")
-    logger.log(body)
+
+    body = bottle.request.json.copy()
+    headers = {}
+    for k, v in bottle.request.headers.items():
+        if k.lower().startswith('x-limit-'):
+            headers[k] = v
+    body['_meta'] = {'headers': headers}
+
+    body_str = json.dumps(body)
+    if len(body_str) > 1024:
+        raise ValueError(f"Body too large: {body_str}")
+    logger.log(body_str)
+
     return '[]'
 
 parser = argparse.ArgumentParser()
