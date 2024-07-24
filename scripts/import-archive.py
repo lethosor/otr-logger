@@ -97,8 +97,9 @@ def main(args):
             records_in_data.extend(parse_records(f, data_filename, preprocess_line=lambda line: line[line.find('{'):]))
     records_in_data.sort()
     print('records in data folder:', len(records_in_data))
+    records_in_data_set = set(records_in_data)
 
-    records_to_add = [r for r in records_in_archive if r not in records_in_data]
+    records_to_add = [r for r in records_in_archive if r not in records_in_data_set]
     print('records to add:', len(records_to_add))
 
     for i, r in enumerate(records_to_add):
